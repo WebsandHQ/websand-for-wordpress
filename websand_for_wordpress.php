@@ -9,9 +9,11 @@
   * Author URI: http://www.websandhq.com
   */
 
-
+  ///////////////////////////////////////////////////////
   // Widget class
   // https://codex.wordpress.org/Widget_API
+  ///////////////////////////////////////////////////////
+
   class websandhq_contact extends WP_Widget {
     
     // Set up the widget name and description.
@@ -28,7 +30,7 @@
       if(empty($instance['wshq_source'])){
         $source = $options['default_source'];
       } else {
-	$source = $instance['wshq_source'];
+	      $source = $instance['wshq_source'];
       };
 
       if(empty($instance['wshq_redirect'])){
@@ -116,11 +118,15 @@
   add_action('wp_enqueue_scripts', 'websandhq_register_scripts');
   add_action('widgets_init', function(){ register_widget('websandhq_contact'); });
 
+  
+  ///////////////////////////////////////////////////////
   // Shortcode for use in posts/pages
   // https://codex.wordpress.org/Shortcode_API
+  ///////////////////////////////////////////////////////
 
-   //[websand source_code="something" thank_you="http://www.example.com/thanks.html"]
+  add_shortcode('websand', 'websand_shortcode_handler');
 
+  //[websand source_code="something" thank_you="http://www.example.com/thanks.html"]
   function websand_shortcode_handler($atts) {
     $options = get_option('websand_options');
     $params = shortcode_atts(array(
@@ -156,22 +162,24 @@
           <input type="submit" name="wshq_subscribe_button" class="websand-submit button button-primary" value="Subscribe">
         </div>
       </form>
-
    <?php
    return ob_get_clean(); 
-
-
   } 
  
-  add_shortcode('websand', 'websand_shortcode_handler');
-  
-  
+  ///////////////////////////////////////////////////////
   // Admin settings page
-  
-add_action('admin_menu', 'websand_admin_add_page');
+  ///////////////////////////////////////////////////////
+  add_action('admin_menu', 'websand_admin_add_page');
+  add_action('admin_init', 'websand_admin_init');
 
   function websand_admin_add_page() {
-    add_options_page('Websand for WordPress', 'Websand for WordPress', 'manage_options', 'plugin', 'websand_options_page');
+    add_options_page(
+      'Websand for WordPress', 
+      'Websand for WordPress', 
+      'manage_options', 
+      'plugin', 
+      'websand_options_page'
+    );
   }
 
   function websand_options_page() {
@@ -184,11 +192,8 @@ add_action('admin_menu', 'websand_admin_add_page');
         <input name="Submit" type="submit" value="<?php esc_attr_e('Save Changes'); ?>" />
       </form>
     </div>
- 
     <?php
   }
-
-  add_action('admin_init', 'websand_admin_init');
   
   function websand_admin_init(){
     register_setting( 'websand_options', 'websand_options', 'websand_options_validate' );

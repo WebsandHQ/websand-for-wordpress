@@ -19,7 +19,7 @@ jQuery(".websand-for-wordpress-widget").submit(function(event){
         }
       }),
       success: function(data, textStatus, jqXHR) {
-	jQuery('.websand-for-wordpress-widget')[0].reset();
+	      jQuery('.websand-for-wordpress-widget')[0].reset();
       },
       error: function (xhr, ajaxOptions, thrownError) {
         console.log(xhr);
